@@ -6,16 +6,16 @@
 
 using Real=double;
 
-extern "C" void FORTRAN_MOD_CALL(fortranvar, loadvar)(...);
+extern "C" void loadvar ();
 
-extern "C" void FORTRAN_MOD_CALL(fortranvar, get1dvectorr)(int *, int *, int *,
-                                                           int *, Real **, Real **, int *);
+extern "C" void get1dvectorr (int *, int *, int *,
+                              int *, Real **, Real **, int *);
 
 extern "C" int FORTRAN_DREF_VAR(fortranvar, globalint)(...);
 
 int main()
 {
-  FORTRAN_MOD_CALL(fortranvar, loadvar)();
+  loadvar ();
   std::cout << "Hello\nGlobal Int: " << FORTRAN_DREF_VAR(fortranvar, globalint) << std::endl;
 
 
@@ -33,7 +33,7 @@ int main()
   std::cout << "Values: " << values << std::endl;
   std::cout << "Error Code: " << error_code << std::endl;
 
-  FORTRAN_MOD_CALL(fortranvar, get1dvectorr)(&field_num, &component_number, &face,
+  get1dvectorr (&field_num, &component_number, &face,
                                              &buffer_lengths, &elevations, &values, &error_code);
 
   std::cout << "Buffer Lengths: " << buffer_lengths << std::endl;
