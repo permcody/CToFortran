@@ -18,7 +18,7 @@ MODULE FortranVar
 !
    CONTAINS
 
-SUBROUTINE LoadVar
+SUBROUTINE LoadVar () bind(C, name="loadvar")
 !
    IMPLICIT NONE
 !
@@ -43,7 +43,7 @@ SUBROUTINE LoadVar
    END DO
 END SUBROUTINE LoadVar
 
-      SUBROUTINE Get1DVectorR(name, compnum, face, elements, elevation, pointr, errorCode)
+      SUBROUTINE Get1DVectorR(name, compnum, face, elements, elevation, pointr, errorCode) bind(C, name="get1dvectorr")
         INTEGER(c_int), INTENT(INOUT) :: name
         INTEGER(c_int), INTENT(IN) :: compnum
         INTEGER(c_int), INTENT(IN) :: face
