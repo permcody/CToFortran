@@ -1,4 +1,7 @@
 *.o
 *.mod
-
 CToFortran
+.libs
+*.lo
+*.dylib
+*.la
