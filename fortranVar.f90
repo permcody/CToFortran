@@ -1,4 +1,6 @@
 MODULE FortranVar
+!
+   USE iso_c_binding
    IMPLICIT NONE
 !
    REAL*8 :: globalReal
@@ -42,12 +44,12 @@ SUBROUTINE LoadVar
 END SUBROUTINE LoadVar
 
       SUBROUTINE Get1DVectorR(name, compnum, face, elements, elevation, pointr, errorCode)
-        INTEGER, INTENT(INOUT) :: name
-        INTEGER, INTENT(IN) :: compnum
-        INTEGER, INTENT(IN) :: face
-        INTEGER, INTENT(OUT) :: errorCode
-        REAL, DIMENSION(:), POINTER :: pointr, elevation
-        INTEGER :: elements
+        INTEGER(c_int), INTENT(INOUT) :: name
+        INTEGER(c_int), INTENT(IN) :: compnum
+        INTEGER(c_int), INTENT(IN) :: face
+        INTEGER(c_int), INTENT(OUT) :: errorCode
+        REAL(c_float), DIMENSION(:), POINTER :: pointr, elevation
+        INTEGER(c_int), INTENT(OUT) :: elements
         INTEGER :: i, cco
 
         PRINT *,"Name: ",name
