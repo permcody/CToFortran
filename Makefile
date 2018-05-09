@@ -5,7 +5,7 @@ all: CToFortran
 GFORTRAN_LIB_FLAG ?= -L/opt/moose/gcc-7.2.0/lib
 
 LIBMESH_DIR ?= $(HOME)/projects/moose/libmesh
-LIBTOOL ?= $(LIBMESH_DIR)/installed/contrib/bin/libtool
+LIBTOOL ?= $(LIBMESH_DIR)/contrib/bin/libtool
 FC := $(shell which gfortran)
 
 # Set this to true or false
