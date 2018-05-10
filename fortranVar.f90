@@ -6,7 +6,9 @@ MODULE FortranVar
    REAL*8 :: globalReal
    INTEGER :: globalInt
    LOGICAL :: globalLogical
-!
+   !
+   REAL*8, TARGET, DIMENSION(2) :: LocalElev = (/1.0, 2.0/)
+
    TYPE ComplexType
       INTEGER :: num1
       REAL*8 :: num2
@@ -43,18 +45,24 @@ SUBROUTINE LoadVar () bind(C, name="loadvar")
          END DO
       END DO
    END DO
-END SUBROUTINE LoadVar
+ END SUBROUTINE LoadVar
+
+ SUBROUTINE subtest(pointr) bind(C, name="sub_test")
+   TYPE(C_PTR) :: pointr
+!   REAL(c_double), DIMENSION(:), POINTER :: pointr
+
+   pointr = C_LOC(localElev)
+ END SUBROUTINE
 
       SUBROUTINE Get1DVectorR(name, compnum, face, elements, elevation, pointr, errorCode) bind(C, name="get1dvectorr")
         INTEGER(c_int), INTENT(INOUT) :: name
         INTEGER(c_int), INTENT(IN) :: compnum
         INTEGER(c_int), INTENT(IN) :: face
         INTEGER(c_int), INTENT(OUT) :: errorCode
-        REAL(c_double), DIMENSION(:), POINTER :: pointr, elevation
+        TYPE(c_ptr) :: pointr, elevation
         INTEGER(c_int), INTENT(OUT) :: elements
         INTEGER :: i, cco
 
-        REAL*8, TARGET, DIMENSION(2) :: LocalElev
 
         PRINT *,"Name: ",name
         PRINT *,"CompNum: ",compnum
@@ -91,7 +99,8 @@ END SUBROUTINE LoadVar
 
         cco = 0
         errorCode =0
-        localElev = (/1.0, 2.0/)
+!        localElev = (/1.0, 2.0/)
+
 !        DO i=1, SIZE(bisonAR)
 !           IF (compNum==bisonAr(i)%traceCompNum) cco=i
 !        END DO
@@ -99,9 +108,9 @@ END SUBROUTINE LoadVar
 !           errorCode = 1
 !           Return
 !        END if
-        elevation => localElev
+        elevation = C_LOC(localElev)
         elements = SIZE(FortranType(compNum)%num4(:,face))
-        pointr => FortranType(compnum)%num4(:,face)
+        pointr = C_LOC(FortranType(compnum)%num4(:,face))
 
         PRINT *,"Name: ",name
         PRINT *,"CompNum: ",compnum
