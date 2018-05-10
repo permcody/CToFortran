@@ -21,7 +21,7 @@ int main()
 
 
   int field_num = 1;
-  int component_number = 71; //getParam<int>("component_number");
+  int component_number = 1; //getParam<int>("component_number");
   int face = 2; //getParam<int>("face");
 
   int buffer_lengths = 0;

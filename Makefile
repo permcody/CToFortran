@@ -2,7 +2,7 @@ all: CToFortran
 
 # Note: If this path is incorrect, just export the right one in your environment. e.g.:
 # export GFORTRAN_LIB_FLAG=/real/path/to/libgfortran.dylib or .a
-GFORTRAN_LIB_FLAG ?= -L/opt/moose/gcc-7.2.0/lib
+GFORTRAN_LIB_FLAG ?= -L/opt/moose/gcc-7.3.0/lib
 
 HOME_DIR := $(shell echo $$HOME)
 LIBMESH_DIR ?= $(HOME_DIR)/projects/moose/libmesh/installed

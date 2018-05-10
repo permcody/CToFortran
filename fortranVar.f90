@@ -22,7 +22,7 @@ SUBROUTINE LoadVar () bind(C, name="loadvar")
 !
    IMPLICIT NONE
 !
-   INTEGER :: i, j
+   INTEGER :: i, j, k
 !
    globalReal = 1.0
    globalInt= 2
@@ -38,7 +38,9 @@ SUBROUTINE LoadVar () bind(C, name="loadvar")
    DO i=1,2
       FortranType(i)%num3(i) = i*2.0d0
       DO j=1,2
-         FortranType(i)%num4(i,j) = i*j*3
+         DO k=1,2
+            FortranType(i)%num4(j,k) = i*j*3
+         END DO
       END DO
    END DO
 END SUBROUTINE LoadVar
@@ -48,9 +50,11 @@ END SUBROUTINE LoadVar
         INTEGER(c_int), INTENT(IN) :: compnum
         INTEGER(c_int), INTENT(IN) :: face
         INTEGER(c_int), INTENT(OUT) :: errorCode
-        REAL(c_float), DIMENSION(:), POINTER :: pointr, elevation
+        REAL(c_double), DIMENSION(:), POINTER :: pointr, elevation
         INTEGER(c_int), INTENT(OUT) :: elements
         INTEGER :: i, cco
+
+        REAL*8, TARGET, DIMENSION(2) :: LocalElev
 
         PRINT *,"Name: ",name
         PRINT *,"CompNum: ",compnum
@@ -58,6 +62,7 @@ END SUBROUTINE LoadVar
 
         PRINT *,"Elements: ",elements
         PRINT *,"ErrorCode: ",errorCode
+        PRINT *, "FortranType Values: ", FortranType(compnum)%num4(:,2)
 
 
 !    name - ascii string denoting the name of the variable that
@@ -86,6 +91,7 @@ END SUBROUTINE LoadVar
 
         cco = 0
         errorCode =0
+        localElev = (/1.0, 2.0/)
 !        DO i=1, SIZE(bisonAR)
 !           IF (compNum==bisonAr(i)%traceCompNum) cco=i
 !        END DO
@@ -93,9 +99,9 @@ END SUBROUTINE LoadVar
 !           errorCode = 1
 !           Return
 !        END if
-        elevation => NULL()
-        elements = 100
-        pointr => NULL()
+        elevation => localElev
+        elements = SIZE(FortranType(compNum)%num4(:,face))
+        pointr => FortranType(compnum)%num4(:,face)
 
         PRINT *,"Name: ",name
         PRINT *,"CompNum: ",compnum
