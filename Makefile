@@ -5,7 +5,7 @@ all: CToFortran
 GFORTRAN_LIB_FLAG ?= -L/opt/moose/gcc-7.3.0/lib
 
 HOME_DIR := $(shell echo $$HOME)
-LIBMESH_DIR ?= $(HOME_DIR)/projects/red_crab/moose/libmesh/installed
+LIBMESH_DIR ?= $(HOME_DIR)/projects/moose/libmesh/installed
 LIBTOOL ?= $(LIBMESH_DIR)/contrib/bin/libtool
 FC := $(shell which gfortran)
 
