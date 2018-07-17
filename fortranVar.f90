@@ -47,12 +47,24 @@ SUBROUTINE LoadVar () bind(C, name="loadvar")
    END DO
  END SUBROUTINE LoadVar
 
- SUBROUTINE subtest(pointr) bind(C, name="sub_test")
-   TYPE(C_PTR) :: pointr
-!   REAL(c_double), DIMENSION(:), POINTER :: pointr
+ SUBROUTINE subtest(c_str, c_len) bind(C, name="string_test")
+   TYPE(C_PTR) :: c_str
+   INTEGER(c_int), INTENT(IN) :: c_len
+   CHARACTER(LEN=1), DIMENSION(:), POINTER :: f_str
 
-   pointr = C_LOC(localElev)
- END SUBROUTINE
+   call c_f_pointer(c_str, f_str, (/c_len/))
+
+   print *,f_str
+ END SUBROUTINE subtest
+
+ SUBROUTINE booltest(true_val, false_val) bind(C, name="bool_test")
+   LOGICAL(c_bool) :: true_val
+   LOGICAL(c_bool) :: false_val
+
+   print *,"True: ",true_val
+   print *,"False: ",false_val
+
+ ENd SUBROUTINE booltest
 
       SUBROUTINE Get1DVectorR(name, compnum, face, elements, elevation, pointr, errorCode) bind(C, name="get1dvectorr")
         INTEGER(c_int), INTENT(INOUT) :: name
